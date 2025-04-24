@@ -7,14 +7,14 @@ from dotenv import load_dotenv
 import os
 
 from app.routes import (
-    auth_bp, register_bp, catalogue_bp, twilio_bp,
+    auth_bp, register_bp, catalogue_bp,
     tables_bp, admin_bp
 )
 
 def create_app():
     load_dotenv()
 
-    app = Flask(__name__, static_folder="/Users/noamhaythem/Desktop/Projet_auth/authback_clean/static")
+    app = Flask(__name__, static_folder="static")
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'super-secret')
 
     # Init JWT + CORS
@@ -25,7 +25,6 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(register_bp)
     app.register_blueprint(catalogue_bp)
-    app.register_blueprint(twilio_bp)
     app.register_blueprint(tables_bp)
     app.register_blueprint(admin_bp)
 
