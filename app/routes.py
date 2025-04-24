@@ -323,6 +323,7 @@ def passer_commande_anonyme():
     try:
         data = request.get_json()
         user_id = data.get("user_id")
+        username = data.get("username")
         table = data.get("table_numero")
         boissons = data.get("boissons")
         image_url = data.get("image_url", "")
@@ -334,6 +335,7 @@ def passer_commande_anonyme():
 
         commande = {
             "user_id": user_id,
+            "username":username,
             "table_numero": table,
             "boissons": boissons,
             "image_url": image_url,
