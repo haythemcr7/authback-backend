@@ -1,0 +1,20 @@
+# Ignorer environnement virtuel
+backenv/
+__pycache__/
+*.pyc
+
+# Fichiers de config secrets
+.env
+.env.*
+
+# QR codes / images lourdes
+public/qr/
+*.png
+*.jpg
+*.jpeg
+*.svg
+
+# Dépendances système ou IDE
+.DS_Store
+.idea/
+.vscode/
