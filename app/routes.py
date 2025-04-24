@@ -51,13 +51,13 @@ load_dotenv()
 def get_tables():
     try:
         tables_collection = mongo_config.get_collection("tables")
-        tables = list(tables_collection.find())
+        tables = list(tables_collection.find())  # Récupère toutes les tables
         for t in tables:
-            t["_id"] = str(t["_id"])  # rendre JSON serializable
+            t["_id"] = str(t["_id"])  # Convertir l'ObjectId en chaîne
         return jsonify(tables), 200
     except Exception as e:
-        print("Erreur récupération des tables :", e)
-        return jsonify({"error": "Erreur serveur"}), 500
+        print(f"Erreur récupération des tables : {e}")
+        return jsonify({"error": f"Erreur serveur: {e}"}), 500
 
 
 
