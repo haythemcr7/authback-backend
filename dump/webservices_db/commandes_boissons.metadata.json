@@ -1,0 +1,1 @@
+{"options":{"validationLevel":"strict","validationAction":"error"},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"d036ec43493949779be2f837373dba51","collectionName":"commandes_boissons","type":"collection"}
