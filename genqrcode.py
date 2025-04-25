@@ -4,7 +4,7 @@ import qrcode
 import os
 
 # ✅ URL de base vers ton frontend (localhost ou déploiement)
-BASE_URL = "http://localhost:3000/table"
+BASE_URL = "http://react-frontend-production.up.railway.app/table"
 
 # 📁 Dossier de sortie des QR codes
 OUTPUT_DIR = "public/qr"

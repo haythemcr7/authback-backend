@@ -8,9 +8,18 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
 from flask_jwt_extended import get_jwt_identity, get_jwt
 from bson.objectid import ObjectId
-
+from twilio.rest import Client
 import os
 from dotenv import load_dotenv
+
+
+
+
+
+
+
+
+twilio_bp = Blueprint("twilio", __name__)
 catalogue_bp = Blueprint('catalogue', __name__)
 tables_bp = Blueprint("tables", __name__)
 mongo_config = MongoConfig()
@@ -51,13 +60,13 @@ load_dotenv()
 def get_tables():
     try:
         tables_collection = mongo_config.get_collection("tables")
-        tables = list(tables_collection.find())  # Récupère toutes les tables
+        tables = list(tables_collection.find())
         for t in tables:
-            t["_id"] = str(t["_id"])  # Convertir l'ObjectId en chaîne
+            t["_id"] = str(t["_id"])  # rendre JSON serializable
         return jsonify(tables), 200
     except Exception as e:
-        print(f"Erreur récupération des tables : {e}")
-        return jsonify({"error": f"Erreur serveur: {e}"}), 500
+        print("Erreur récupération des tables :", e)
+        return jsonify({"error": "Erreur serveur"}), 500
 
 
 
@@ -191,6 +200,23 @@ def livrer_commande(commande_id):
 
 
 
+@admin_bp.route("/admin/archiver-commandes", methods=["POST"])
+@jwt_required()
+def archiver_commandes():
+    if get_jwt_identity() != "admin":
+        return jsonify({"error": "Accès refusé"}), 403
+
+    commandes_boissons_col = mongo_config.get_collection("commandes_boissons")
+    commandes_hist_col = mongo_config.get_collection("commandes_hist")
+
+    commandes = list(commandes_boissons_col.find())
+
+    if commandes:
+        commandes_hist_col.insert_many(commandes)
+        commandes_boissons_col.delete_many({})
+
+    return jsonify({"message": "Commandes archivées avec succès."}), 200
+
 
 
 
@@ -323,7 +349,6 @@ def passer_commande_anonyme():
     try:
         data = request.get_json()
         user_id = data.get("user_id")
-        username = data.get("username")
         table = data.get("table_numero")
         boissons = data.get("boissons")
         image_url = data.get("image_url", "")
@@ -335,7 +360,6 @@ def passer_commande_anonyme():
 
         commande = {
             "user_id": user_id,
-            "username":username,
             "table_numero": table,
             "boissons": boissons,
             "image_url": image_url,
