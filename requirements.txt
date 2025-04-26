@@ -33,7 +33,6 @@ multidict==6.4.3
 networkx==3.4.2
 numba==0.61.2
 numpy==1.26.4
-onnxruntime-silicon==1.16.3
 opencv-python-headless==4.11.0.86
 packaging==25.0
 pillow==11.2.1
